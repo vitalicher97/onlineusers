@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+
+<script>
+    // For repeating checking status
+    setInterval(function checkUsersOnline() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("onlinePage").innerHTML =
+                    this.responseText[1];
+                document.getElementById("onlineTotal").innerHTML =
+                    this.responseText[3];
+            }
+        };
+        xhttp.open("GET", "/onlineusers/index", true);
+        xhttp.send();
+    }, 100);
+
+    window.onbeforeunload = closingCode;
+    function closingCode(){
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/remove/index", true);
+        xhttp.send();
+        return null;
+    }
+</script>
+
+<div>
+    <p>Number of users online on this page:</p>
+    <p id="onlinePage"></p>
+    <p>Number of total users online on website:</p>
+    <p id="onlineTotal"></p>
+</div>
+
+</body>
+</html>
